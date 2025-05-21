@@ -27,4 +27,18 @@ public class ProductService {
         Product entity = mapper.toEntity(dto);
         return mapper.toDTO(repository.save(entity));
     }
+
+    public ProductDTO update(Long id, ProductDTO dto) {
+        Product existing = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + id));
+
+        existing.setName(dto.getName());
+        existing.setCategory(dto.getCategory());
+        existing.setImageUrl(dto.getImageUrl());
+        existing.setPrice(dto.getPrice());
+        existing.setRating(dto.getRating());
+
+        Product updated = repository.save(existing);
+        return mapper.toDTO(updated);
+    }
 }
