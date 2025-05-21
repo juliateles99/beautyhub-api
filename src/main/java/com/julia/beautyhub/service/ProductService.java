@@ -41,4 +41,28 @@ public class ProductService {
         Product updated = repository.save(existing);
         return mapper.toDTO(updated);
     }
+
+    public void delete(Long id) {
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + id));
+        repository.delete(product);
+    }
+
+    public List<ProductDTO> findFiltered(String name, String category) {
+        List<Product> products;
+
+        if (name != null && category != null) {
+            products = repository.findByNameContainingIgnoreCaseAndCategoryIgnoreCase(name, category);
+        } else if (name != null) {
+            products = repository.findByNameContainingIgnoreCase(name);
+        } else if (category != null) {
+            products = repository.findByCategoryIgnoreCase(category);
+        } else {
+            products = repository.findAll();
+        }
+
+        return products.stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
