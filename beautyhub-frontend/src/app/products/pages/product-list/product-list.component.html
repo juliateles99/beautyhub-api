@@ -1,0 +1,16 @@
+<h2 style="text-align: center; margin-top: 20px;">🛍️ Lista de Produtos</h2>
+
+<div *ngIf="products.length === 0" class="empty">
+    Nenhum produto encontrado.
+</div>
+
+<div class="product-grid">
+    <div class="product-card" *ngFor="let p of products">
+        <img [src]="p.imageUrl" alt="{{ p.name }}">
+        <h3>{{ p.name }}</h3>
+        <p><strong>Categoria:</strong> {{ p.category }}</p>
+        <p class="price">{{ p.price | currency:'BRL' }}</p>
+        <p><strong>Nota:</strong> {{ p.rating }}</p>
+        <button (click)="deleteProduct(p.id!)">🗑 Excluir</button>
+    </div>
+</div>
